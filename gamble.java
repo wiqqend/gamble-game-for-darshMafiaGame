@@ -98,11 +98,80 @@ public class Gamble {
         }
     }
 
-    // Jacob
-    public void slots() {
-        // TODO
-    }
-
+public void slots() {
+        printGameInfo("Slots", "You will place a bet and spin the machine. If one 7 lands money back, if two 7s land you will win 2x your bet. if three 7s land you will win 3x your bet.");
+        int bet = askForBet();
+        int[] slotResults = new int[3];
+        System.out.println("Spinning the slots...");
+        try {
+            Thread.sleep(500); // Simulate spinning delay
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("1  7  3");
+        try {
+            Thread.sleep(500); // Simulate spinning delay
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("2  9  2");
+        try {
+            Thread.sleep(500); // Simulate spinning delay
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("3  7  1");
+        try {
+            Thread.sleep(500); // Simulate spinning delay
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("1  7  3");
+        try {
+            Thread.sleep(500); // Simulate spinning delay
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("2  9  2");
+        try {
+            Thread.sleep(500); // Simulate spinning delay
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("3  7  1");
+        try {
+            Thread.sleep(500); // Simulate spinning delay
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        int one = randomInt(1,9);
+        int two = randomInt(1,9);
+        int three = randomInt(1,9);
+        System.out.println("Final result: " + one + "  " + two + "  " + three);
+        int winCalc = 0;
+        if (one == 7) {
+            winCalc++;
+        }
+        if (two == 7) {
+            winCalc++;
+        }
+        if (three == 7) {
+            winCalc++;
+        }
+        if (winCalc == 1) {
+            System.out.println("You win 1x your bet!");
+            winBet(bet, 1);
+        } else if (winCalc == 2) {
+            System.out.println("You win 2x your bet!");
+            winBet(bet, 2);
+        } else if (winCalc == 3) {
+            System.out.println("You win 3x your bet!");
+            winBet(bet, 3);
+        } else {
+            System.out.println("You lose!!!");
+            loseBet(bet);
+        }
+        }
     // Jacob
      public void blackjack() {
         printGameInfo("Blackjack", "You will be given 2 cards, of possible values together of 2 to 21, \nthe dealer you are versing will also be given cards. Your goal: \n Get as close to 21 as possible without going over. ");
@@ -188,6 +257,7 @@ public class Gamble {
             System.out.println("Congratulations you guessed correctly");
         } else {
             System.out.println("You did not guess correctly");
+        }
         }
 
 
