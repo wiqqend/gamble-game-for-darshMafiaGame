@@ -27,12 +27,63 @@ public class Gamble {
     // ------------------------------
 
     // Main entry point. Shows options and loops until the player exits.
-    public void gambleMenu() {
-        // TODO: show games, deposit, payout and exit options
-        // TODO: read the choice and call the matching method
-        // TODO: loop until the player exits
-        
+public void gambleMenu() {
+    System.out.println("Welcome to the gamble menu!");
+    System.out.println("1. Coin Flip");
+    System.out.println("2. Slots");
+    System.out.println("3. Scratch Offs");
+    System.out.println("4. Three Cups");
+    System.out.println("5. Black Jack");
+    System.out.println("6. Roulette");
+    System.out.println("7. High Low");
+    System.out.println("8. Russian Roulette");
+    System.out.println("9. Exit");
+    System.out.println("10. Deposit Coins");
+    System.out.println("11. Payout Coins");
+
+
+    int choice = this.scanner.nextInt();
+    
+    if (choice == 1) {
+        coinFlip();
+        highLow();
+    } else if (choice == 2) {
+        slots();
+        highLow();
+    } else if (choice == 3) {
+        lottery();
+        highLow();
+    } else if (choice == 4) {
+        threeCups();
+        highLow();
+    } else if (choice == 5) {
+        blackjack();
+        highLow();
+    } else if (choice == 6) {
+        roulette();
+        highLow();
+    } else if (choice == 7) {
+        highLow();
+        gambleMenu();
+    } else if (choice == 8) {
+        russianRoulette();
+        gambleMenu();
+    } else if (choice == 9) {
+        System.out.println("Exiting...");
+    } else if (choice ==10) {
+        depositCoins();
+        highLow();
     }
+    else if (choice == 11) {
+       payout();
+       highLow();
+    }
+        
+        
+    else {
+        System.out.println("Invalid choice. Please try again.");
+    }
+
 
     // ------------------------------
     // Chip methods
@@ -40,20 +91,35 @@ public class Gamble {
 
     // Turns coins into chips (10 coins = 1 chip) and lowers honor.
     public void depositCoins() {
-        // TODO: ask how many coins to deposit
-        // TODO: check the player has enough coins
-        // TODO: remove the coins from the player
-        // TODO: add coins / COINS_PER_CHIP to chips
-        // TODO: call lowerHonor(...)
+
+        System.out.println("How many coins would you like to deposit? (Rate: 10 coins per chip): ");
+        int coinDeptAmt = this.scanner.nextInt();
+        
+        if (coinDeptAmt < Player.coins){
+        this.chips = coinDeptAmt / COINS_PER_CHIP;
+        Player.coins -= coinDeptAmt; // not sure what the coins are for player (figure out later)
+        lowerHonor(10);
+        }
+        else {
+            System.out.print("Error occured or not enough coins");
+        }
     }
 
     // Turns chips into coins (1 chip = 9 coins) and adds them to the wallet.
     public void payout() {
-        // TODO: display the current chips
-        // TODO: ask how many chips to cash out
-        // TODO: check hasEnoughChips(amount)
-        // TODO: remove the chips
-        // TODO: call player.addMoney(amount * COINS_PER_CASHOUT)
+        System.out.println("You currently have " + getChips() + " chips.");
+
+        System.out.println("How many chips would you like to cash out?");
+        int cashOutNum = this.scanner.nextInt();
+        if (hasEnoughChips(cashOutNum)){
+        Player.coins = cashOutNum * COINS_PER_CASHOUT; // adjust to use setter for coins;
+        this.chips -= cashOutNum;
+        }
+        else{
+            System.out.print("Error occured or not enough coins");
+        }
+
+
     }
 
     public int getChips() {
@@ -204,26 +270,52 @@ public void slots() {
     }
  
 
-// Rafal (coin based)
-    public void lottery() {
-        // TODO
-        System.out.println("Pick an integer between 1 and 1000 ");
-        int userNum = this.scanner.nextInt();
-        if (userNum > 1000 || userNum < 1) {
-            System.out.println("Please enter a number between 1 and 1000 ");
-        } 
-        int winningNum = (int) Math.random() * 1001;
 
-        if (userNum == winningNum) {
-            System.out.println("Congratulations you won! ");
-        } else {
-            System.out.println("You did not win, the correct number was " + winningNum);
+public void lottery() {
+        printGameInfo("Scrath Offs", "Choose your ticket amount. One 7 is 1x, Two 7s are 2x, and three 7s are 3x");
+        int bet = askForBet();
+        System.out.println("Scratching...");
+        try {
+            Thread.sleep(500); // Simulate spinning delay
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-    }
+        int one = randomInt(1,14);
+        int two = randomInt(1,14);
+        int three = randomInt(1,14);
+        System.out.println(one);
+        System.out.println("Scratching...");
+        System.out.println(two);
+        System.out.println("Scratching...");
+        System.out.println(three);
+        System.out.println("Final result: " + one + "  " + two + "  " + three);
+        int winCalc = 0;
+        if (one == 7) {
+            winCalc++;
+        }
+        if (two == 7) {
+            winCalc++;
+        }
+        if (three == 7) {
+            winCalc++;
+        }
+        if (winCalc == 1) {
+            System.out.println("You win 1x your bet!");
+            winBet(bet, 1);
+        } else if (winCalc == 2) {
+            System.out.println("You win 2x your bet!");
+            winBet(bet, 2);
+        } else if (winCalc == 3) {
+            System.out.println("You win 3x your bet!");
+            winBet(bet, 3);
+        } else {
+            System.out.println("You lose!!!");
+            loseBet(bet);
+        }
+        }
 
     // Rafal (red, black, green)
     public void roulette() {
-        // TODO
         System.out.println("Bet on red, black, or green 1 = red, 2 = black, 3 = green. ");
         int userPred = this.scanner.nextInt();
         int table = (int) Math.random() * 101;
@@ -389,7 +481,6 @@ public void coinFlip() {
 
     // Explains a game before it starts.
     private void printGameInfo(String name, String rules) {
-        // TODO
         System.out.println("Welcome to " + name + " the rules are as follows: " + rules);
     }
 
@@ -462,7 +553,6 @@ public void coinFlip() {
 
     // Lowers the player's honor.
     private void lowerHonor(int amount) {
-        // TODO: call the honor method on player
         // Player.lowerHonor(100); // Not sure yet since I need class name for player
     }
 }
